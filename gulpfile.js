@@ -93,20 +93,32 @@ gulp.task('cssSaldo', function () {
 });
 
 gulp.task('bytebankTS', function () {
-    console.log("compile bytebankTS...");
+    console.log("Compilando bytebankTS e minificando bytebankJS...");
     return gulp.src('ts/bytebank.ts')
         .pipe(ts())
-        .pipe(gulp.dest('js'));
-});
-
-// Minify bytebank.js
-gulp.task('bytebankJS', function () {
-    console.log("compile bytebankJS...");
-    return gulp.src('js/bytebank.js')
+        .pipe(gulp.dest('js'))
         .pipe(concat('bytebank.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(jsFolderMin));
+
 });
+
+// // Compile bytebank.ts
+// gulp.task('bytebankTS', function () {
+//     console.log("compile bytebankTS...");
+//     return gulp.src('ts/bytebank.ts')
+//         .pipe(ts())
+//         .pipe(gulp.dest('js'));
+// });
+
+// // Minify bytebank.js
+// gulp.task('bytebankJS', function () {
+//     console.log("compile bytebankJS...");
+//     return gulp.src('js/bytebank.js')
+//         .pipe(concat('bytebank.min.js'))
+//         .pipe(uglify())
+//         .pipe(gulp.dest(jsFolderMin));
+// });
 
 //#region LIVE RELOAD
 // gulp.task('browser-sync', function () {
@@ -142,7 +154,6 @@ gulp.task('buildcss', gulp.series(
 
 gulp.task('buildjs', gulp.series(
     'bytebankTS',
-    'bytebankJS',
 ));
 
 //  cria o comando "gulp watch" que fica observando o array de taks
