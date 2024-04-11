@@ -3,6 +3,7 @@ const { watch } = require('gulp');
 const concat = require('gulp-concat');
 const minifyCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
+const ts = require('gulp-typescript');
 const distFolder = './dist/';
 const cssFolder = `${distFolder}css/`;
 const baseCssFolder = `${cssFolder}base/`;
@@ -91,16 +92,21 @@ gulp.task('cssSaldo', function () {
         .pipe(gulp.dest(componentsCssFolder));
 });
 
-//Minify Home.js
-// gulp.task('homeJs', function () {
-//     return gulp
-//         .src([
-//             './wwwroot/js/Home/Home.js',
-//         ])
-//         .pipe(concat('home.min.js'))
-//         .pipe(uglify())
-//         .pipe(gulp.dest(jsFolderMin));
-// });
+gulp.task('bytebankTS', function () {
+    console.log("compile bytebankTS...");
+    return gulp.src('ts/bytebank.ts')
+        .pipe(ts())
+        .pipe(gulp.dest('js'));
+});
+
+// Minify bytebank.js
+gulp.task('bytebankJS', function () {
+    console.log("compile bytebankJS...");
+    return gulp.src('js/bytebank.js')
+        .pipe(concat('bytebank.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsFolderMin));
+});
 
 //#region LIVE RELOAD
 // gulp.task('browser-sync', function () {
@@ -134,9 +140,10 @@ gulp.task('buildcss', gulp.series(
     'cssSaldo',
 ));
 
-// gulp.task('buildjs', gulp.series(
-//     'homeJs',
-// ));
+gulp.task('buildjs', gulp.series(
+    'bytebankTS',
+    'bytebankJS',
+));
 
 //  cria o comando "gulp watch" que fica observando o array de taks
 // exports.watch = function () {
