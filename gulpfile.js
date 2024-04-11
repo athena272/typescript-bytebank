@@ -55,6 +55,42 @@ gulp.task('cssCabecalho', function () {
         .pipe(gulp.dest(componentsCssFolder));
 });
 
+// minify extrato css
+gulp.task('cssExtrato', function () {
+    console.log("compile cssExtrato...");
+    return gulp.src('css/componentes/_extrato.css')
+        .pipe(concat('_extrato.min.css'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest(componentsCssFolder));
+});
+
+// minify menu css
+gulp.task('cssMenu', function () {
+    console.log("compile cssMenu...");
+    return gulp.src('css/componentes/_menu.css')
+        .pipe(concat('_menu.min.css'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest(componentsCssFolder));
+});
+
+// minify nova transacao css
+gulp.task('cssNovaTransacao', function () {
+    console.log("compile cssNovaTransacao...");
+    return gulp.src('css/componentes/_nova-transacao.css')
+        .pipe(concat('_nova-transacao.min.css'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest(componentsCssFolder));
+});
+
+// minify saldo css
+gulp.task('cssSaldo', function () {
+    console.log("compile cssSaldo...");
+    return gulp.src('css/componentes/_saldo.css')
+        .pipe(concat('_saldo.min.css'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest(componentsCssFolder));
+});
+
 //Minify Home.js
 // gulp.task('homeJs', function () {
 //     return gulp
@@ -92,6 +128,10 @@ gulp.task('buildcss', gulp.series(
     'cssForm',
     'cssNormalize',
     'cssCabecalho',
+    'cssExtrato',
+    'cssMenu',
+    'cssNovaTransacao',
+    'cssSaldo',
 ));
 
 // gulp.task('buildjs', gulp.series(
