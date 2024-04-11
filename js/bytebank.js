@@ -1,39 +1,35 @@
-let saldo = 3000
-const elementoSaldo = document.querySelector(".saldo-valor .valor")
-elementoSaldo.textContent = `R$ ${saldo}`
-
-const elementoFormulario = document.querySelector(".block-nova-transacao form")
-elementoFormulario.addEventListener("submit", function (event) {
-    event.preventDefault()
+var saldo = 3000;
+var elementoSaldo = document.querySelector(".saldo-valor .valor");
+elementoSaldo ? elementoSaldo.textContent = "R$ ".concat(saldo) : null;
+var elementoFormulario = document.querySelector(".block-nova-transacao form");
+elementoFormulario ? elementoFormulario.addEventListener("submit", function (event) {
+    event.preventDefault();
     if (!elementoFormulario.checkValidity()) {
-        alert("Por favor, preencha todos os campos")
-        return
+        alert("Por favor, preencha todos os campos");
+        return;
     }
-
-    const inputTipoTransacao = elementoFormulario.querySelector("#tipoTransacao")
-    const inputValor = elementoFormulario.querySelector("#valor")
-    const inputData = elementoFormulario.querySelector("#data")
-    let tipoTransacao = inputTipoTransacao.value
-    let valor = inputValor.value
-    let data = inputData.value
-
+    var inputTipoTransacao = elementoFormulario.querySelector("#tipoTransacao");
+    var inputValor = elementoFormulario.querySelector("#valor");
+    var inputData = elementoFormulario.querySelector("#data");
+    var tipoTransacao = inputTipoTransacao.value;
+    var valor = inputValor.valueAsNumber;
+    var data = new Date(inputData.value);
     if (tipoTransacao == "Depósito") {
-        saldo += valor
-    } else if (tipoTransacao == "Transferência" || tipoTransacao == "Pagamento de Boleto") {
-        saldo -= valor
-    } else {
-        alert("Tipo de Transação é inválido!")
-        return
+        saldo += valor;
     }
-
-    elementoSaldo.textContent = `R$ ${saldo}`
-
-    const novaTransacao = {
-        tipoTransacao,
-        valor,
-        data
+    else if (tipoTransacao == "Transferência" || tipoTransacao == "Pagamento de Boleto") {
+        saldo -= valor;
     }
-    console.log("🚀 ~ novaTransacao:", novaTransacao)
-    elementoFormulario.reset()
-})
-
+    else {
+        alert("Tipo de Transação é inválido!");
+        return;
+    }
+    elementoSaldo ? elementoSaldo.textContent = "R$ ".concat(saldo) : null;
+    var novaTransacao = {
+        tipoTransacao: tipoTransacao,
+        valor: valor,
+        data: data
+    };
+    console.log("🚀 ~ novaTransacao:", novaTransacao);
+    elementoFormulario.reset();
+}) : null;
