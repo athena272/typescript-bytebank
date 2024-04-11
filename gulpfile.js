@@ -5,6 +5,8 @@ const minifyCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const distFolder = './dist/';
 const cssFolder = `${distFolder}css/`;
+const baseCssFolder = `${cssFolder}base/`;
+const componentsCssFolder = `${cssFolder}componentes/`;
 const jsFolderMin = `${distFolder}js/`;
 
 // minify app css
@@ -16,26 +18,41 @@ gulp.task('cssApp', function () {
         .pipe(gulp.dest(cssFolder));
 });
 
-// minify home scss
-gulp.task('sassHome', function () {
-    console.log("compile sassHome...");
-    return gulp.src('styles/home.scss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./css'))
-        .pipe(concat('home.min.css'))
+// minify base css
+gulp.task('cssBase', function () {
+    console.log("compile cssBase...");
+    return gulp.src('css/base/_base.css')
+        .pipe(concat('_base.min.css'))
         .pipe(minifyCSS())
-        .pipe(gulp.dest(cssFolder));
+        .pipe(gulp.dest(baseCssFolder));
 });
 
-// minify login scss
-gulp.task('sassLogin', function () {
-    console.log("compile sassLogin...");
-    return gulp.src('styles/login.scss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./css'))
-        .pipe(concat('login.min.css'))
+// minify form css
+gulp.task('cssForm', function () {
+    console.log("compile cssForm...");
+    return gulp.src('css/base/_form.css')
+        .pipe(concat('_form.min.css'))
         .pipe(minifyCSS())
-        .pipe(gulp.dest(cssFolder));
+        .pipe(gulp.dest(baseCssFolder));
+});
+
+
+// minify normalize css
+gulp.task('cssNormalize', function () {
+    console.log("compile cssNormalize...");
+    return gulp.src('css/base/_normalize.css')
+        .pipe(concat('_normalize.min.css'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest(baseCssFolder));
+});
+
+// minify cabecalho css
+gulp.task('cssCabecalho', function () {
+    console.log("compile cssCabecalho...");
+    return gulp.src('css/componentes/_cabecalho.css')
+        .pipe(concat('_cabecalho.min.css'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest(componentsCssFolder));
 });
 
 //Minify Home.js
@@ -71,6 +88,10 @@ gulp.task('sassLogin', function () {
 //  coloca as "tasks" em um array chamado "buildsass"
 gulp.task('buildcss', gulp.series(
     'cssApp',
+    'cssBase',
+    'cssForm',
+    'cssNormalize',
+    'cssCabecalho',
 ));
 
 // gulp.task('buildjs', gulp.series(
