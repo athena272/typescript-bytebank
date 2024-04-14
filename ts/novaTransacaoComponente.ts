@@ -9,7 +9,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
     const inputTipoTransacao = elementoFormulario.querySelector("#tipoTransacao") as HTMLSelectElement
     const inputValor = elementoFormulario.querySelector("#valor") as HTMLInputElement
     const inputData = elementoFormulario.querySelector("#data") as HTMLInputElement
-    let tipoTransacao: string = inputTipoTransacao.value
+    let tipoTransacao: TipoTransacao = inputTipoTransacao.value as TipoTransacao
     let valor: number = inputValor.valueAsNumber
     let data: Date = new Date(inputData.value)
 
@@ -25,7 +25,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
 
     elementoSaldo ? elementoSaldo.textContent = `R$ ${saldo}` : null
 
-    const novaTransacao = {
+    const novaTransacao: Transacao = {
         tipoTransacao,
         valor,
         data
