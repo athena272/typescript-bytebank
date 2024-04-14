@@ -10,6 +10,8 @@ const baseCssFolder = `${cssFolder}base/`;
 const componentsCssFolder = `${cssFolder}componentes/`;
 const jsFolderMin = `${distFolder}js/`;
 
+const tsProject = ts.createProject('tsconfig.json');
+
 // minify app css
 gulp.task('cssApp', function () {
     console.log("compile cssApp...");
@@ -19,22 +21,32 @@ gulp.task('cssApp', function () {
         .pipe(gulp.dest(cssFolder));
 });
 
-gulp.task('bytebankTS', function () {
-    console.log("Compilando bytebankTS e minificando bytebankJS...");
-    return gulp.src('ts/bytebank.ts')
-        .pipe(ts())
+gulp.task('typescriptTS', function () {
+    console.log("Compilando typescriptTS e minificando typescriptTS...");
+    return gulp.src('ts/typescript.ts')
+        .pipe(tsProject())
         // .pipe(gulp.dest('js'))
-        .pipe(concat('bytebank.min.js'))
+        .pipe(concat('typescript.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(jsFolderMin));
 });
 
-gulp.task('typescriptTS', function () {
-    console.log("Compilando typescriptTS e minificando typescriptTS...");
-    return gulp.src('ts/typescript.ts')
-        .pipe(ts())
+gulp.task('saldoTS', function () {
+    console.log("Compilando saldoTS e minificando saldoTS...");
+    return gulp.src('ts/saldoComponente.ts')
+        .pipe(tsProject())
         // .pipe(gulp.dest('js'))
-        .pipe(concat('typescript.min.js'))
+        .pipe(concat('saldoComponente.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsFolderMin));
+});
+
+gulp.task('novaTransacaoTS', function () {
+    console.log("Compilando novaTransacaoTS e minificando novaTransacaoTS...");
+    return gulp.src('ts/novaTransacaoComponente.ts')
+        .pipe(tsProject())
+        // .pipe(gulp.dest('js'))
+        .pipe(concat('novaTransacaoComponente.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(jsFolderMin));
 });
@@ -72,8 +84,9 @@ gulp.task('buildcss', gulp.series(
 ));
 
 gulp.task('buildjs', gulp.series(
-    'bytebankTS',
     'typescriptTS',
+    'saldoTS',
+    'novaTransacaoTS',
 ));
 
 //  cria o comando "gulp watch" que fica observando o array de taks
