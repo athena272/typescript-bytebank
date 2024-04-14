@@ -23,7 +23,8 @@ type Transacao = {
 }
 
 const novaTransacao: Transacao = {
-    tipoTransacao: TipoTransacao.TRANSFERENCIA,
+    tipoTransacao: TipoTransacao.PAGAMENTO_BOLETO,
     data: new Date(),
     valor: 999,
 }
+console.log("🚀 ~ novaTransacao:", novaTransacao)
