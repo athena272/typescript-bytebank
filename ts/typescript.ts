@@ -27,4 +27,5 @@ const novaTransacao: Transacao = {
     data: new Date(),
     valor: 999,
 }
+
 console.log("🚀 ~ novaTransacao:", novaTransacao)
