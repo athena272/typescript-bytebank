@@ -29,6 +29,16 @@ gulp.task('bytebankTS', function () {
         .pipe(gulp.dest(jsFolderMin));
 });
 
+gulp.task('typescriptTS', function () {
+    console.log("Compilando typescriptTS e minificando typescriptTS...");
+    return gulp.src('ts/typescript.ts')
+        .pipe(ts())
+        // .pipe(gulp.dest('js'))
+        .pipe(concat('typescript.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsFolderMin));
+});
+
 // // Compile bytebank.ts
 // gulp.task('bytebankTS', function () {
 //     console.log("compile bytebankTS...");
@@ -63,6 +73,7 @@ gulp.task('buildcss', gulp.series(
 
 gulp.task('buildjs', gulp.series(
     'bytebankTS',
+    'typescriptTS',
 ));
 
 //  cria o comando "gulp watch" que fica observando o array de taks
