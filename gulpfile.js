@@ -96,7 +96,6 @@ gulp.task('bytebankTS', function () {
     console.log("Compilando bytebankTS e minificando bytebankJS...");
     return gulp.src('ts/bytebank.ts')
         .pipe(ts())
-        .pipe(gulp.dest('js'))
         .pipe(concat('bytebank.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(jsFolderMin));
@@ -142,14 +141,6 @@ gulp.task('bytebankTS', function () {
 //  coloca as "tasks" em um array chamado "buildsass"
 gulp.task('buildcss', gulp.series(
     'cssApp',
-    'cssBase',
-    'cssForm',
-    'cssNormalize',
-    'cssCabecalho',
-    'cssExtrato',
-    'cssMenu',
-    'cssNovaTransacao',
-    'cssSaldo',
 ));
 
 gulp.task('buildjs', gulp.series(
