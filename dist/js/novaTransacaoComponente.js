@@ -15,7 +15,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
     if (tipoTransacao == "Depósito") {
         saldo += valor;
     }
-    else if (tipoTransacao == "Transferência" || tipoTransacao == "Pagamento de Boleto") {
+    else if (tipoTransacao === TipoTransacao.TRANSFERENCIA || tipoTransacao === TipoTransacao.PAGAMENTO_BOLETO) {
         saldo -= valor;
     }
     else {
