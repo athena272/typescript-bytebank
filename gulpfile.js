@@ -96,10 +96,10 @@ gulp.task('bytebankTS', function () {
     console.log("Compilando bytebankTS e minificando bytebankJS...");
     return gulp.src('ts/bytebank.ts')
         .pipe(ts())
+        // .pipe(gulp.dest('js'))
         .pipe(concat('bytebank.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(jsFolderMin));
-
 });
 
 // // Compile bytebank.ts
