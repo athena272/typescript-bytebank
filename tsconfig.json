@@ -1,5 +1,10 @@
 {
     "compilerOptions": {
-        "noEmitOnError": true,
-    }
+        "target": "ES2022",
+        "outDir": "./dist/js/",
+        "noEmitOnError": true
+    },
+    "include": [
+        "./ts/*.ts"
+    ]
 }
