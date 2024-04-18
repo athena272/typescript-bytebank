@@ -10,21 +10,21 @@ const baseCssFolder = `${cssFolder}base/`;
 const componentsCssFolder = `${cssFolder}componentes/`;
 const jsFolderMin = `${distFolder}js/`;
 
-const tsProject = ts.createProject('tsconfig.json');
+// const tsProject = ts.createProject('tsconfig.json');
 
-// minify app css
-gulp.task('cssApp', function () {
-    console.log("compile cssApp...");
-    return gulp.src('css/app.css')
-        .pipe(concat('app.min.css'))
-        .pipe(minifyCSS())
-        .pipe(gulp.dest(cssFolder));
-});
+// // minify app css
+// gulp.task('cssApp', function () {
+//     console.log("compile cssApp...");
+//     return gulp.src('css/app.css')
+//         .pipe(concat('app.min.css'))
+//         .pipe(minifyCSS())
+//         .pipe(gulp.dest(cssFolder));
+// });
 
 gulp.task('typescriptTS', function () {
     console.log("Compilando typescriptTS e minificando typescriptTS...");
     return gulp.src('ts/typescript.ts')
-        .pipe(tsProject())
+        .pipe(ts())
         // .pipe(gulp.dest('js'))
         .pipe(concat('typescript.min.js'))
         .pipe(uglify())
@@ -34,7 +34,7 @@ gulp.task('typescriptTS', function () {
 gulp.task('saldoTS', function () {
     console.log("Compilando saldoTS e minificando saldoTS...");
     return gulp.src('ts/saldoComponente.ts')
-        .pipe(tsProject())
+        .pipe(ts())
         // .pipe(gulp.dest('js'))
         .pipe(concat('saldoComponente.min.js'))
         .pipe(uglify())
@@ -44,7 +44,7 @@ gulp.task('saldoTS', function () {
 gulp.task('novaTransacaoTS', function () {
     console.log("Compilando novaTransacaoTS e minificando novaTransacaoTS...");
     return gulp.src('ts/novaTransacaoComponente.ts')
-        .pipe(tsProject())
+        .pipe(ts())
         // .pipe(gulp.dest('js'))
         .pipe(concat('novaTransacaoComponente.min.js'))
         .pipe(uglify())
@@ -78,10 +78,10 @@ gulp.task('novaTransacaoTS', function () {
 // });
 //#endregion
 
-//  coloca as "tasks" em um array chamado "buildsass"
-gulp.task('buildcss', gulp.series(
-    'cssApp',
-));
+// //  coloca as "tasks" em um array chamado "buildsass"
+// gulp.task('buildcss', gulp.series(
+//     'cssApp',
+// ));
 
 gulp.task('buildjs', gulp.series(
     'typescriptTS',
