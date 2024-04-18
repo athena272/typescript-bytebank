@@ -22,6 +22,11 @@ function formatarData(data, formato = FormatoData.PADRAO) {
     }
     return data.toLocaleDateString("pt-br");
 }
+function formatarInformacoes(valor, data, formatoData = FormatoData.PADRAO) {
+    const dataFormatada = formatarData(data, formatoData);
+    const valorFormatado = formatarMoeda(valor);
+    return `${dataFormatada} - ${valorFormatado}`;
+}
 // function formatarData(data: Date): string {
 //     return data.toLocaleDateString("pt-br", {
 //         weekday: "long",
