@@ -22,6 +22,7 @@ const Conta = {
             return;
         }
         console.log("🚀 ~ registrarTransacao ~ novaTransacao:", novaTransacao);
+        console.log("🚀 ~ registrarTransacao ~ novoSaldo:", saldo);
     }
 };
 export default Conta;
