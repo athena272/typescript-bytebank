@@ -1,5 +1,20 @@
 import { TipoTransacao } from "./Transacao.js";
 let saldo = 3000;
+function debitar(valor) {
+    if (valor <= 0) {
+        throw new Error("O valor a ser debitado deve ser maior que zero!");
+    }
+    if (valor > saldo) {
+        throw new Error("Saldo insuficiente!");
+    }
+    saldo -= valor;
+}
+function depositar(valor) {
+    if (valor <= 0) {
+        throw new Error("O valor a ser depositado deve ser maior que zero!");
+    }
+    saldo += valor;
+}
 const Conta = {
     getSaldo() {
         return saldo;
@@ -18,8 +33,7 @@ const Conta = {
             saldo -= valorToUse;
         }
         else {
-            alert("Tipo de Transação é inválido!");
-            return;
+            throw new Error("Tipo de Transação é inválido!");
         }
         console.log("🚀 ~ registrarTransacao ~ novaTransacao:", novaTransacao);
         console.log("🚀 ~ registrarTransacao ~ novoSaldo:", saldo);
