@@ -8,7 +8,6 @@ elementoDataAcesso.textContent = formatarData(dataAcesso, FormatoData.DIA_SEMANA
 renderSaldo();
 function renderSaldo() {
     const saldo = Conta.getSaldo();
-    console.log("🚀 ~ renderSaldo(): void", saldo);
     elementoSaldo.textContent = formatarMoeda(saldo);
 }
 const SaldoComponent = {
