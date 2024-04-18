@@ -94,9 +94,10 @@ gulp.task('novaTransacaoTS', function () {
 // ));
 
 gulp.task('buildjs', gulp.series(
-    'typescriptTS',
-    'saldoTS',
-    'novaTransacaoTS',
+    // 'typescriptTS',
+    // 'saldoTS',
+    // 'novaTransacaoTS',
+    'appTS',
 ));
 
 //  cria o comando "gulp watch" que fica observando o array de taks
