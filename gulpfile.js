@@ -21,6 +21,16 @@ const jsFolderMin = `${distFolder}js/`;
 //         .pipe(gulp.dest(cssFolder));
 // });
 
+gulp.task('appTS', function () {
+    console.log("Compilando appTS e minificando appTS...");
+    return gulp.src('ts/app.ts')
+        .pipe(ts())
+        // .pipe(gulp.dest('js'))
+        .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsFolderMin));
+});
+
 gulp.task('typescriptTS', function () {
     console.log("Compilando typescriptTS e minificando typescriptTS...");
     return gulp.src('ts/typescript.ts')
