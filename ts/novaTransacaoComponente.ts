@@ -23,7 +23,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
         return
     }
 
-    elementoSaldo ? elementoSaldo.textContent = saldo.toLocaleString("pt-br", { currency: "BRL", style: "currency" }) : null
+    elementoSaldo ? elementoSaldo.textContent = formatarMoeda(saldo) : null
 
     const novaTransacao: Transacao = {
         tipoTransacao,
