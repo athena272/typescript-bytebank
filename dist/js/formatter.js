@@ -1,35 +1,32 @@
 // enum
 var FormatoData;
 (function (FormatoData) {
-    FormatoData["PADRAO"] = "padrao";
-    FormatoData["DIA_SEMANA_DIA_MES_ANO"] = "data longa";
-    FormatoData["DIA_MES"] = "dia mes";
+    FormatoData["PADRAO"] = "DD/MM/AAAA";
+    FormatoData["DIA_SEMANA_DIA_MES_ANO"] = "DIA_SEMANA, DD/MM/AAAA";
+    FormatoData["DIA_MES"] = "DD/MM";
 })(FormatoData || (FormatoData = {}));
 function formatarMoeda(valor) {
     return valor.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
 }
-function formatarData(data) {
-    return data.toLocaleDateString("pt-br", {
-        weekday: "long",
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-    });
+function formatarData(data, formato = FormatoData.PADRAO) {
+    if (formato === FormatoData.DIA_SEMANA_DIA_MES_ANO) {
+        return data.toLocaleDateString("pt-br", {
+            weekday: "long",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        });
+    }
+    else if (formato === FormatoData.DIA_MES) {
+        return data.toLocaleDateString("pt-br", { day: "2-digit", month: "2-digit" });
+    }
+    return data.toLocaleDateString("pt-br");
 }
-// function formatarMoeda(valor: number): string {
-//     return valor.toLocaleString("pt-br", { style: "currency", currency: "BRL" })
-// }
-// function formatarData(data: Date, formato: FormatoData = FormatoData.PADRAO): string {
-//     if (formato === FormatoData.DIA_SEMANA_DIA_MES_ANO) {
-//         return data.toLocaleDateString("pt-br", {
-//             weekday: "long",
-//             day: "2-digit",
-//             month: "2-digit",
-//             year: "numeric"
-//         })
-//     }
-//     else if (formato === FormatoData.DIA_MES) {
-//         return data.toLocaleDateString("pt-br", { day: "2-digit", month: "2-digit" })
-//     }
-//     return data.toLocaleDateString("pt-br")
+// function formatarData(data: Date): string {
+//     return data.toLocaleDateString("pt-br", {
+//         weekday: "long",
+//         day: "2-digit",
+//         month: "2-digit",
+//         year: "numeric"
+//     })
 // }
