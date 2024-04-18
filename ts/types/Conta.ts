@@ -1,7 +1,6 @@
 import { Transacao, TipoTransacao } from "./Transacao.js";
 
 let saldo = 3000
-
 const Conta = {
     getSaldo() {
         return saldo;
@@ -23,6 +22,7 @@ const Conta = {
         }
 
         console.log("🚀 ~ registrarTransacao ~ novaTransacao:", novaTransacao)
+        console.log("🚀 ~ registrarTransacao ~ novoSaldo:", saldo)
     }
 }
 
