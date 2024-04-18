@@ -1,4 +1,3 @@
-import { formatarMoeda } from "../utils/formatter.js"
 import { Transacao, TipoTransacao } from "../types/Transacao.js"
 import { updateSaldo, getSaldo } from "./saldoComponente.js"
 
