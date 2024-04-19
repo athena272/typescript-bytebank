@@ -2,6 +2,7 @@ import { Transacao, TipoTransacao } from "./Transacao.js"
 import { GrupoTransacao } from "./GrupoTransacao.js"
 import { formatarData } from "../utils/formatter.js"
 import { FormatoData } from "./Data.js"
+import { ResumoTransacoes } from "./ResumoTransacoes.js"
 
 let saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
 
@@ -84,7 +85,33 @@ const Conta = {
         localStorage.setItem("transacoes", JSON.stringify(transacoes))
         // console.log("🚀 ~ registrarTransacao ~ transacoes:", transacoes)
         // console.log("🚀 ~ registrarTransacao ~ this.getGruposTransacoes():", this.getGruposTransacoes())
+    },
+    agruparTransacoes(): ResumoTransacoes {
+        const resumo: ResumoTransacoes = {
+            totalDepositos: 0,
+            totalTransferencias: 0,
+            totalPagamentosBoleto: 0
+        }
+
+        this.transacoes.forEach(transacao => {
+            switch (transacao.tipoTransacao) {
+                case TipoTransacao.DEPOSITO:
+                    resumo.totalDepositos += transacao.valor
+                    break
+
+                case TipoTransacao.TRANSFERENCIA:
+                    resumo.totalTransferencias += transacao.valor
+                    break
+
+                case TipoTransacao.PAGAMENTO_BOLETO:
+                    resumo.totalPagamentosBoleto += transacao.valor
+                    break
+            }
+        })
+
+        return resumo
     }
+
 }
 
 export default Conta
