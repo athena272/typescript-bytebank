@@ -1,6 +1,8 @@
 import { Transacao, TipoTransacao } from "./Transacao.js";
+import { GrupoTransacao } from "./GrupoTransacao.js";
 
-let saldo = 3000
+let saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0;
+
 const transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
     console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value })
     if (key === 'data') {
@@ -19,6 +21,7 @@ function debitar(valor: number): void {
     }
 
     saldo -= valor;
+    localStorage.setItem("saldo", saldo.toString());
 }
 
 function depositar(valor: number): void {
@@ -27,6 +30,7 @@ function depositar(valor: number): void {
     }
 
     saldo += valor;
+    localStorage.setItem("saldo", saldo.toString());
 }
 
 const Conta = {
@@ -35,6 +39,12 @@ const Conta = {
     },
     getDataAcesso(): Date {
         return new Date();
+    },
+    getGruposTransacoes(): GrupoTransacao[] {
+        const gruposTransacoes: GrupoTransacao[] = [];
+        const listaTransacoes: Transacao[] = structuredClone(transacoes);
+
+        return gruposTransacoes
     },
     registrarTransacao(novaTransacao: Transacao): void {
         const tipoTransacaoToUse = novaTransacao.tipoTransacao
