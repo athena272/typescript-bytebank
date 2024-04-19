@@ -4,7 +4,7 @@ import { GrupoTransacao } from "./GrupoTransacao.js";
 let saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0;
 
 const transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
-    console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value })
+    // console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value })
     if (key === 'data') {
         return new Date(value)
     }
@@ -42,9 +42,24 @@ const Conta = {
     },
     getGruposTransacoes(): GrupoTransacao[] {
         const gruposTransacoes: GrupoTransacao[] = [];
+        // cria uma copia, ao inves de fazer uma referencia na memoria
         const listaTransacoes: Transacao[] = structuredClone(transacoes);
+        const transacoesOrdenadas: Transacao[] = listaTransacoes.sort((t1, t2) => t2.data.getTime() - t1.data.getTime())
+        let labelAtualGrupoTransacao: string = ''
 
-        return gruposTransacoes
+        for (let transacao of transacoesOrdenadas) {
+            let labelGrupoTransacao: string = transacao.data.toLocaleDateString("pt-br", { month: "long", year: "numeric" });
+            if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
+                labelAtualGrupoTransacao = labelGrupoTransacao;
+                gruposTransacoes.push({
+                    label: labelGrupoTransacao,
+                    transacoes: []
+                });
+            }
+            gruposTransacoes.at(-1).transacoes.push(transacao);
+        }
+
+        return gruposTransacoes;
     },
     registrarTransacao(novaTransacao: Transacao): void {
         const tipoTransacaoToUse = novaTransacao.tipoTransacao
@@ -65,6 +80,7 @@ const Conta = {
         transacoes.push(novaTransacao)
         localStorage.setItem("transacoes", JSON.stringify(transacoes))
         // console.log("🚀 ~ registrarTransacao ~ transacoes:", transacoes)
+        console.log("🚀 ~ registrarTransacao ~ this.getGruposTransacoes():", this.getGruposTransacoes())
     }
 }
 
