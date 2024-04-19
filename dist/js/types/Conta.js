@@ -1,4 +1,6 @@
 import { TipoTransacao } from "./Transacao.js";
+import { formatarData } from "../utils/formatter.js";
+import { FormatoData } from "./Data.js";
 let saldo = JSON.parse(localStorage.getItem("saldo")) || 0;
 const transacoes = JSON.parse(localStorage.getItem("transacoes"), (key, value) => {
     // console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value })
@@ -38,7 +40,7 @@ const Conta = {
         const transacoesOrdenadas = listaTransacoes.sort((t1, t2) => t2.data.getTime() - t1.data.getTime());
         let labelAtualGrupoTransacao = '';
         for (let transacao of transacoesOrdenadas) {
-            let labelGrupoTransacao = transacao.data.toLocaleDateString("pt-br", { month: "long", year: "numeric" });
+            let labelGrupoTransacao = formatarData(transacao.data, FormatoData.MES_ANO);
             if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
                 labelAtualGrupoTransacao = labelGrupoTransacao;
                 gruposTransacoes.push({
@@ -52,13 +54,14 @@ const Conta = {
     },
     registrarTransacao(novaTransacao) {
         const tipoTransacaoToUse = novaTransacao.tipoTransacao;
-        const valorToUse = novaTransacao.valor;
+        let valorToUse = novaTransacao.valor;
         // Obtenha o saldo atual usando getSaldo()
         if (tipoTransacaoToUse == "Depósito") {
             depositar(valorToUse);
         }
         else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
             debitar(valorToUse);
+            valorToUse = valorToUse * -1;
         }
         else {
             throw new Error("Tipo de Transação é inválido!");
@@ -68,7 +71,7 @@ const Conta = {
         transacoes.push(novaTransacao);
         localStorage.setItem("transacoes", JSON.stringify(transacoes));
         // console.log("🚀 ~ registrarTransacao ~ transacoes:", transacoes)
-        console.log("🚀 ~ registrarTransacao ~ this.getGruposTransacoes():", this.getGruposTransacoes());
+        // console.log("🚀 ~ registrarTransacao ~ this.getGruposTransacoes():", this.getGruposTransacoes())
     }
 };
 export default Conta;
