@@ -33,9 +33,11 @@ const Conta = {
         const valorToUse = novaTransacao.valor
         // Obtenha o saldo atual usando getSaldo()
         if (tipoTransacaoToUse == "Depósito") {
-            saldo += valorToUse
+            depositar(valorToUse)
+
         } else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
-            saldo -= valorToUse
+            debitar(valorToUse)
+
         } else {
             throw new Error("Tipo de Transação é inválido!");
         }
