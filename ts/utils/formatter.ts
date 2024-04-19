@@ -13,6 +13,9 @@ export function formatarData(data: Date, formato: FormatoData = FormatoData.PADR
             year: "numeric"
         })
     }
+    else if (formato === FormatoData.MES_ANO) {
+        return data.toLocaleDateString("pt-br", { month: "long", year: "numeric" })
+    }
     else if (formato === FormatoData.DIA_MES) {
         return data.toLocaleDateString("pt-br", { day: "2-digit", month: "2-digit" })
     }
@@ -21,9 +24,9 @@ export function formatarData(data: Date, formato: FormatoData = FormatoData.PADR
 }
 
 export function formatarInformacoes(valor: number, data: Date, formatoData: FormatoData = FormatoData.PADRAO): string {
-    const dataFormatada = formatarData(data, formatoData);
-    const valorFormatado = formatarMoeda(valor);
-    return `${dataFormatada} - ${valorFormatado}`;
+    const dataFormatada = formatarData(data, formatoData)
+    const valorFormatado = formatarMoeda(valor)
+    return `${dataFormatada} - ${valorFormatado}`
 }
 
 // function formatarData(data: Date): string {
