@@ -11,6 +11,9 @@ export function formatarData(data, formato = FormatoData.PADRAO) {
             year: "numeric"
         });
     }
+    else if (formato === FormatoData.MES_ANO) {
+        return data.toLocaleDateString("pt-br", { month: "long", year: "numeric" });
+    }
     else if (formato === FormatoData.DIA_MES) {
         return data.toLocaleDateString("pt-br", { day: "2-digit", month: "2-digit" });
     }
