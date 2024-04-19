@@ -1,7 +1,7 @@
 import { TipoTransacao } from "./Transacao.js";
 let saldo = JSON.parse(localStorage.getItem("saldo")) || 0;
 const transacoes = JSON.parse(localStorage.getItem("transacoes"), (key, value) => {
-    console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value });
+    // console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value })
     if (key === 'data') {
         return new Date(value);
     }
@@ -33,7 +33,21 @@ const Conta = {
     },
     getGruposTransacoes() {
         const gruposTransacoes = [];
+        // cria uma copia, ao inves de fazer uma referencia na memoria
         const listaTransacoes = structuredClone(transacoes);
+        const transacoesOrdenadas = listaTransacoes.sort((t1, t2) => t2.data.getTime() - t1.data.getTime());
+        let labelAtualGrupoTransacao = '';
+        for (let transacao of transacoesOrdenadas) {
+            let labelGrupoTransacao = transacao.data.toLocaleDateString("pt-br", { month: "long", year: "numeric" });
+            if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
+                labelAtualGrupoTransacao = labelGrupoTransacao;
+                gruposTransacoes.push({
+                    label: labelGrupoTransacao,
+                    transacoes: []
+                });
+            }
+            gruposTransacoes.at(-1).transacoes.push(transacao);
+        }
         return gruposTransacoes;
     },
     registrarTransacao(novaTransacao) {
@@ -54,6 +68,7 @@ const Conta = {
         transacoes.push(novaTransacao);
         localStorage.setItem("transacoes", JSON.stringify(transacoes));
         // console.log("🚀 ~ registrarTransacao ~ transacoes:", transacoes)
+        console.log("🚀 ~ registrarTransacao ~ this.getGruposTransacoes():", this.getGruposTransacoes());
     }
 };
 export default Conta;
