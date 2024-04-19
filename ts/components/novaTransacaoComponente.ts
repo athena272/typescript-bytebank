@@ -17,7 +17,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
         const inputData = elementoFormulario.querySelector("#data") as HTMLInputElement
         let tipoTransacao: TipoTransacao = inputTipoTransacao.value as TipoTransacao
         let valor: number = inputValor.valueAsNumber
-        let data: Date = new Date(inputData.value + "00:00:00") // detalhe da linguagem
+        let data: Date = new Date(inputData.value + " 00:00:00") // detalhe da linguagem
 
         const novaTransacao: Transacao = {
             tipoTransacao,
