@@ -7,7 +7,6 @@ import { ResumoTransacoes } from "./ResumoTransacoes.js"
 let saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
 
 const transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
-    // console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value })
     if (key === 'data') {
         return new Date(value)
     }
@@ -79,12 +78,8 @@ const Conta = {
             throw new Error("Tipo de Transação é inválido!")
         }
 
-        // console.log("🚀 ~ registrarTransacao ~ novaTransacao:", novaTransacao)
-        // console.log("🚀 ~ registrarTransacao ~ novoSaldo:", saldo)
         transacoes.push(novaTransacao)
         localStorage.setItem("transacoes", JSON.stringify(transacoes))
-        // console.log("🚀 ~ registrarTransacao ~ transacoes:", transacoes)
-        // console.log("🚀 ~ registrarTransacao ~ this.getGruposTransacoes():", this.getGruposTransacoes())
     },
     agruparTransacoes(): ResumoTransacoes {
         const resumo: ResumoTransacoes = {
