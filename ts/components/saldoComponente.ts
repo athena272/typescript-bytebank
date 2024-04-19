@@ -3,9 +3,7 @@ import Conta from "../types/Conta.js"
 
 function getBlurValue(): string {
     const saldo = formatarMoeda(Conta.getSaldo())
-    console.log("🚀 ~ getBlurValue ~ saldo:", saldo)
     const blurSaldo = saldo.replace(/\d/g, 'X')
-    console.log("🚀 ~ getBlurValue ~ blurSaldo:", blurSaldo)
 
     return blurSaldo
 }
