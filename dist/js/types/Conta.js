@@ -1,5 +1,5 @@
 import { TipoTransacao } from "./Transacao.js";
-let saldo = 3000;
+let saldo = JSON.parse(localStorage.getItem("saldo")) || 0;
 const transacoes = JSON.parse(localStorage.getItem("transacoes"), (key, value) => {
     console.log("🚀 ~ consttransacoes:Transacao[]=JSON.parse ~ key: string, value: string:", { key, value });
     if (key === 'data') {
@@ -15,12 +15,14 @@ function debitar(valor) {
         throw new Error("Saldo insuficiente!");
     }
     saldo -= valor;
+    localStorage.setItem("saldo", saldo.toString());
 }
 function depositar(valor) {
     if (valor <= 0) {
         throw new Error("O valor a ser depositado deve ser maior que zero!");
     }
     saldo += valor;
+    localStorage.setItem("saldo", saldo.toString());
 }
 const Conta = {
     getSaldo() {
@@ -28,6 +30,11 @@ const Conta = {
     },
     getDataAcesso() {
         return new Date();
+    },
+    getGruposTransacoes() {
+        const gruposTransacoes = [];
+        const listaTransacoes = structuredClone(transacoes);
+        return gruposTransacoes;
     },
     registrarTransacao(novaTransacao) {
         const tipoTransacaoToUse = novaTransacao.tipoTransacao;
