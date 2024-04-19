@@ -1,5 +1,6 @@
 import Conta from "../types/Conta.js";
 import SaldoComponent from "./saldoComponente.js";
+import ExtratoComponent from "./extratoComponent.js";
 const elementoFormulario = document.querySelector(".block-nova-transacao form");
 elementoFormulario ? elementoFormulario.addEventListener("submit", function (event) {
     try {
@@ -13,7 +14,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
         const inputData = elementoFormulario.querySelector("#data");
         let tipoTransacao = inputTipoTransacao.value;
         let valor = inputValor.valueAsNumber;
-        let data = new Date(inputData.value);
+        let data = new Date(inputData.value + "00:00:00"); // detalhe da linguagem
         const novaTransacao = {
             tipoTransacao,
             valor,
@@ -21,6 +22,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
         };
         Conta.registrarTransacao(novaTransacao);
         SaldoComponent.updateInfo();
+        ExtratoComponent.updateInfo();
         elementoFormulario.reset();
     }
     catch (error) {
