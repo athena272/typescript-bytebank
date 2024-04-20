@@ -22,7 +22,7 @@ export class Conta {
     }
 }
 
-const conta = new Conta({
+export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
     saldo: 3000,
 })
