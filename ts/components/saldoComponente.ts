@@ -1,5 +1,5 @@
 import { formatarMoeda, formatarData } from "../utils/formatter.js"
-import Conta from "../types/Conta.js"
+import Conta from "../types/Conta-antiga.js"
 
 function getBlurValue(): string {
     const saldo = formatarMoeda(Conta.getSaldo())

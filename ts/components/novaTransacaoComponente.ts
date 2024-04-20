@@ -1,5 +1,5 @@
 import { Transacao, TipoTransacao } from "../types/Transacao.js"
-import Conta from "../types/Conta.js"
+import Conta from "../types/Conta-antiga.js"
 import SaldoComponent from "./saldoComponente.js"
 import ExtratoComponent from "./extratoComponent.js"
 
