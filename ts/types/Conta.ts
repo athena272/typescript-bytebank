@@ -1,4 +1,7 @@
 import { Transacao } from "./Transacao.js"
+import { GrupoTransacao } from "./GrupoTransacao.js";
+import { formatarData } from "../utils/formatter.js";
+import { FormatoData } from "./Data.js";
 
 interface IConta {
     nome: string;
@@ -19,6 +22,28 @@ export class Conta {
     constructor({ nome, saldo }: IConta) {
         this.nome = nome
         this.saldo = saldo
+    }
+
+    getGruposTransacoes(): GrupoTransacao[] {
+        const gruposTransacoes: GrupoTransacao[] = []
+        // cria uma copia, ao inves de fazer uma referencia na memoria
+        const listaTransacoes: Transacao[] = structuredClone(this.transacoes)
+        const transacoesOrdenadas: Transacao[] = listaTransacoes.sort((t1, t2) => t2.data.getTime() - t1.data.getTime())
+        let labelAtualGrupoTransacao: string = ''
+
+        for (let transacao of transacoesOrdenadas) {
+            let labelGrupoTransacao: string = formatarData(transacao.data, FormatoData.MES_ANO)
+            if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
+                labelAtualGrupoTransacao = labelGrupoTransacao
+                gruposTransacoes.push({
+                    label: labelGrupoTransacao,
+                    transacoes: []
+                })
+            }
+            gruposTransacoes.at(-1).transacoes.push(transacao)
+        }
+
+        return gruposTransacoes
     }
 }
 
