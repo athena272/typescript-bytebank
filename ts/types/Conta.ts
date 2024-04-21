@@ -1,4 +1,4 @@
-import { Transacao } from "./Transacao.js"
+import { Transacao, TipoTransacao } from "./Transacao.js"
 import { GrupoTransacao } from "./GrupoTransacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
@@ -24,6 +24,35 @@ export class Conta {
         this.saldo = saldo
     }
 
+    getSaldo() {
+        return this.saldo
+    }
+
+    getDataAcesso(): Date {
+        return new Date()
+    }
+
+    debitar(valor: number): void {
+        if (valor <= 0) {
+            throw new Error("O valor a ser debitado deve ser maior que zero!")
+        }
+        if (valor > this.saldo) {
+            throw new Error("Saldo insuficiente!")
+        }
+
+        this.saldo -= valor
+        localStorage.setItem("saldo", this.saldo.toString())
+    }
+
+    depositar(valor: number): void {
+        if (valor <= 0) {
+            throw new Error("O valor a ser depositado deve ser maior que zero!")
+        }
+
+        this.saldo += valor
+        localStorage.setItem("saldo", this.saldo.toString())
+    }
+
     getGruposTransacoes(): GrupoTransacao[] {
         const gruposTransacoes: GrupoTransacao[] = []
         // cria uma copia, ao inves de fazer uma referencia na memoria
@@ -44,6 +73,25 @@ export class Conta {
         }
 
         return gruposTransacoes
+    }
+
+    registrarTransacao(novaTransacao: Transacao): void {
+        const tipoTransacaoToUse = novaTransacao.tipoTransacao
+        let valorToUse = novaTransacao.valor
+        // Obtenha o saldo atual usando getSaldo()
+        if (tipoTransacaoToUse == "Depósito") {
+            this.depositar(valorToUse)
+
+        } else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
+            this.debitar(valorToUse)
+            valorToUse = valorToUse * -1
+
+        } else {
+            throw new Error("Tipo de Transação é inválido!")
+        }
+
+        this.transacoes.push(novaTransacao)
+        localStorage.setItem("transacoes", JSON.stringify(this.transacoes))
     }
 }
 
