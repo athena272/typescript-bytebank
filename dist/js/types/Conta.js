@@ -1,3 +1,4 @@
+import { TipoTransacao } from "./Transacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
 export class Conta {
@@ -12,6 +13,29 @@ export class Conta {
     constructor({ nome, saldo }) {
         this.nome = nome;
         this.saldo = saldo;
+    }
+    getSaldo() {
+        return this.saldo;
+    }
+    getDataAcesso() {
+        return new Date();
+    }
+    debitar(valor) {
+        if (valor <= 0) {
+            throw new Error("O valor a ser debitado deve ser maior que zero!");
+        }
+        if (valor > this.saldo) {
+            throw new Error("Saldo insuficiente!");
+        }
+        this.saldo -= valor;
+        localStorage.setItem("saldo", this.saldo.toString());
+    }
+    depositar(valor) {
+        if (valor <= 0) {
+            throw new Error("O valor a ser depositado deve ser maior que zero!");
+        }
+        this.saldo += valor;
+        localStorage.setItem("saldo", this.saldo.toString());
     }
     getGruposTransacoes() {
         const gruposTransacoes = [];
@@ -31,6 +55,23 @@ export class Conta {
             gruposTransacoes.at(-1).transacoes.push(transacao);
         }
         return gruposTransacoes;
+    }
+    registrarTransacao(novaTransacao) {
+        const tipoTransacaoToUse = novaTransacao.tipoTransacao;
+        let valorToUse = novaTransacao.valor;
+        // Obtenha o saldo atual usando getSaldo()
+        if (tipoTransacaoToUse == "Depósito") {
+            this.depositar(valorToUse);
+        }
+        else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
+            this.debitar(valorToUse);
+            valorToUse = valorToUse * -1;
+        }
+        else {
+            throw new Error("Tipo de Transação é inválido!");
+        }
+        this.transacoes.push(novaTransacao);
+        localStorage.setItem("transacoes", JSON.stringify(this.transacoes));
     }
 }
 export const conta = new Conta({
