@@ -1,5 +1,5 @@
 import { Transacao, TipoTransacao } from "../types/Transacao.js"
-import Conta from "../types/Conta-antiga.js"
+import { conta } from "../types/Conta.js"
 import SaldoComponent from "./saldoComponente.js"
 import ExtratoComponent from "./extratoComponent.js"
 
@@ -25,7 +25,7 @@ elementoFormulario ? elementoFormulario.addEventListener("submit", function (eve
             data
         }
 
-        Conta.registrarTransacao(novaTransacao)
+        conta.registrarTransacao(novaTransacao)
 
         SaldoComponent.updateInfo()
         ExtratoComponent.updateInfo()
