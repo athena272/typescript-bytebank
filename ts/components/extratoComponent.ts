@@ -1,13 +1,13 @@
 import { GrupoTransacao } from "../types/GrupoTransacao.js"
 import { formatarMoeda, formatarData } from "../utils/formatter.js"
 import { FormatoData } from "../types/Data.js"
-import Conta from "../types/Conta-antiga.js"
+import { conta } from "../types/Conta.js"
 
 const elementoRegistroTransacoesExtrato: HTMLElement = document.querySelector(".extrato .registro-transacoes")
 
 renderizarExtrato()
 function renderizarExtrato(): void {
-    const gruposTransacoes: GrupoTransacao[] = Conta.getGruposTransacoes()
+    const gruposTransacoes: GrupoTransacao[] = conta.getGruposTransacoes()
     elementoRegistroTransacoesExtrato.innerHTML = ""
     let htmlRegistroTransacoes: string = ""
 
