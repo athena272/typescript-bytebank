@@ -1,7 +1,7 @@
 import { formatarMoeda } from "../utils/formatter.js";
-import Conta from "../types/Conta-antiga.js";
+import { conta } from "../types/Conta.js";
 function getBlurValue() {
-    const saldo = formatarMoeda(Conta.getSaldo());
+    const saldo = formatarMoeda(conta.getSaldo());
     console.log("🚀 ~ getBlurValue ~ saldo:", saldo);
     const blurSaldo = saldo.replace(/\d/g, 'X');
     console.log("🚀 ~ getBlurValue ~ blurSaldo:", blurSaldo);
@@ -11,7 +11,7 @@ const elementoSaldo = document.querySelector(".saldo-valor .valor");
 const visualizarSaldo = document.querySelector(".saldo-valor strong img");
 renderSaldo();
 function renderSaldo() {
-    const saldo = Conta.getSaldo();
+    const saldo = conta.getSaldo();
     elementoSaldo.textContent = formatarMoeda(saldo);
 }
 visualizarSaldo.addEventListener("click", () => {
