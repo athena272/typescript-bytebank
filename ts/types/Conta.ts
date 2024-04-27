@@ -2,16 +2,18 @@ import { Transacao, TipoTransacao } from "./Transacao.js"
 import { GrupoTransacao } from "./GrupoTransacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
+import { Armazenador } from "../utils/Armazeandor.js";
+import { ValidaDebito, ValidaDeposito } from "./Decoratos.js";
 
 interface IConta {
     nome: string;
-    saldo: number;
 }
 
 export class Conta {
-    nome: string
-    saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
+    protected nome: string
+    // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
+    private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
+    private transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
         if (key === 'data') {
             return new Date(value)
         }
@@ -19,41 +21,46 @@ export class Conta {
         return value
     }) || []
 
-    constructor({ nome, saldo }: IConta) {
+    constructor({ nome }: IConta) {
         this.nome = nome
-        this.saldo = saldo
     }
 
-    getSaldo() {
+    public getTitular() {
+        return this.nome
+    }
+
+    public getSaldo() {
         return this.saldo
     }
 
-    getDataAcesso(): Date {
+    public getDataAcesso(): Date {
         return new Date()
     }
 
+    @ValidaDebito
     debitar(valor: number): void {
-        if (valor <= 0) {
-            throw new Error("O valor a ser debitado deve ser maior que zero!")
-        }
-        if (valor > this.saldo) {
-            throw new Error("Saldo insuficiente!")
-        }
+        // if (valor <= 0) {
+        //     throw new Error("O valor a ser debitado deve ser maior que zero!")
+        // }
+        // if (valor > this.saldo) {
+        //     throw new Error("Saldo insuficiente!")
+        // }
 
         this.saldo -= valor
         localStorage.setItem("saldo", this.saldo.toString())
     }
 
+    @ValidaDeposito
     depositar(valor: number): void {
-        if (valor <= 0) {
-            throw new Error("O valor a ser depositado deve ser maior que zero!")
-        }
+        // if (valor <= 0) {
+        //     throw new Error("O valor a ser depositado deve ser maior que zero!")
+        // }
 
         this.saldo += valor
         localStorage.setItem("saldo", this.saldo.toString())
     }
 
-    getGruposTransacoes(): GrupoTransacao[] {
+    public getGruposTransacoes(): GrupoTransacao[] {
         const gruposTransacoes: GrupoTransacao[] = []
         // cria uma copia, ao inves de fazer uma referencia na memoria
         const listaTransacoes: Transacao[] = structuredClone(this.transacoes)
@@ -75,7 +82,7 @@ export class Conta {
         return gruposTransacoes
     }
 
-    registrarTransacao(novaTransacao: Transacao): void {
+    public registrarTransacao(novaTransacao: Transacao): void {
         const tipoTransacaoToUse = novaTransacao.tipoTransacao
         let valorToUse = novaTransacao.valor
         // Obtenha o saldo atual usando getSaldo()
@@ -84,7 +91,7 @@ export class Conta {
 
         } else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
             this.debitar(valorToUse)
-            valorToUse = valorToUse * -1
+            novaTransacao.valor *= -1
 
         } else {
             throw new Error("Tipo de Transação é inválido!")
@@ -95,7 +102,21 @@ export class Conta {
     }
 }
 
+export class ContaPremium extends Conta {
+    registrarTransacao(transacao: Transacao): void {
+        if (transacao.tipoTransacao === TipoTransacao.DEPOSITO) {
+            console.log("ganhou um bônus de 0.50 centavos");
+            transacao.valor += 0.5
+        }
+
+        super.registrarTransacao(transacao)
+    }
+}
+
 export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
-    saldo: 3000,
+})
+
+export const contaPremium = new ContaPremium({
+    nome: "Guilherme",
 })
