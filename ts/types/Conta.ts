@@ -7,14 +7,13 @@ import { ValidaDebito, ValidaDeposito } from "./Decoratos.js";
 
 interface IConta {
     nome: string;
-    saldo: number;
 }
 
 export class Conta {
     protected nome: string
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    private saldo: number = Armazenador.obter<number>("saldo") || 0
-    private transacoes: Transacao[] = Armazenador.obter<Transacao[]>(("transacoes"), (key: string, value: string) => {
+    private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
+    private transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
         if (key === 'data') {
             return new Date(value)
         }
@@ -22,9 +21,8 @@ export class Conta {
         return value
     }) || []
 
-    constructor({ nome, saldo }: IConta) {
+    constructor({ nome }: IConta) {
         this.nome = nome
-        this.saldo = saldo
     }
 
     public getTitular() {
@@ -49,7 +47,7 @@ export class Conta {
         // }
 
         this.saldo -= valor
-        Armazenador.salvar("saldo", this.saldo.toString())
+        localStorage.setItem("saldo", this.saldo.toString())
     }
 
     @ValidaDeposito
@@ -59,7 +57,7 @@ export class Conta {
         // }
 
         this.saldo += valor
-        Armazenador.salvar("saldo", this.saldo.toString())
+        localStorage.setItem("saldo", this.saldo.toString())
     }
 
     public getGruposTransacoes(): GrupoTransacao[] {
@@ -117,10 +115,8 @@ export class ContaPremium extends Conta {
 
 export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
-    saldo: 3000,
 })
 
 export const contaPremium = new ContaPremium({
     nome: "Guilherme",
-    saldo: 15000,
 })
