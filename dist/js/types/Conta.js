@@ -6,7 +6,7 @@ export class Conta {
     nome;
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
     saldo = Armazenador.obter("saldo") || 0;
-    transacoes = JSON.parse(localStorage.getItem("transacoes"), (key, value) => {
+    transacoes = Armazenador.obter(("transacoes"), (key, value) => {
         if (key === 'data') {
             return new Date(value);
         }
@@ -33,14 +33,14 @@ export class Conta {
             throw new Error("Saldo insuficiente!");
         }
         this.saldo -= valor;
-        localStorage.setItem("saldo", this.saldo.toString());
+        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
     }
     depositar(valor) {
         if (valor <= 0) {
             throw new Error("O valor a ser depositado deve ser maior que zero!");
         }
         this.saldo += valor;
-        localStorage.setItem("saldo", this.saldo.toString());
+        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
     }
     getGruposTransacoes() {
         const gruposTransacoes = [];
@@ -76,7 +76,7 @@ export class Conta {
             throw new Error("Tipo de Transação é inválido!");
         }
         this.transacoes.push(novaTransacao);
-        localStorage.setItem("transacoes", JSON.stringify(this.transacoes));
+        Armazenador.salvar({ chave: "transacoes", valor: JSON.stringify(this.transacoes) });
     }
 }
 export const conta = new Conta({
