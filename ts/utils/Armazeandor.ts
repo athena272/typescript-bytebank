@@ -1,7 +1,7 @@
 export class Armazenador {
     private constructor() { }
 
-    static salvar({ chave, valor }: { chave: string, valor: any }): void {
+    static salvar(chave: string, valor: any): void {
         const valorComoString = JSON.stringify(valor);
         localStorage.setItem(chave, valorComoString);
     }

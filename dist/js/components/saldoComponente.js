@@ -2,9 +2,9 @@ import { formatarMoeda } from "../utils/formatter.js";
 import { conta } from "../types/Conta.js";
 function getBlurValue() {
     const saldo = formatarMoeda(conta.getSaldo());
-    console.log("🚀 ~ getBlurValue ~ saldo:", saldo);
+    // console.log("🚀 ~ getBlurValue ~ saldo:", saldo)
     const blurSaldo = saldo.replace(/\d/g, 'X');
-    console.log("🚀 ~ getBlurValue ~ blurSaldo:", blurSaldo);
+    // console.log("🚀 ~ getBlurValue ~ blurSaldo:", blurSaldo)
     return blurSaldo;
 }
 const elementoSaldo = document.querySelector(".saldo-valor .valor");

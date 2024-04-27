@@ -22,7 +22,7 @@
         justify-content: flex-end;
 
         .saldo-valor {
-            min-width: 180px;
+            min-width: 200px;
 
             & strong {
                 font-size: var(--fonte-t2);

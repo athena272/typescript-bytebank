@@ -7,14 +7,13 @@ import { ValidaDebito, ValidaDeposito } from "./Decoratos.js";
 
 interface IConta {
     nome: string;
-    saldo: number;
 }
 
 export class Conta {
     protected nome: string
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    private saldo: number = Armazenador.obter<number>("saldo") || 0
-    private transacoes: Transacao[] = Armazenador.obter<Transacao[]>(("transacoes"), (key: string, value: string) => {
+    private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
+    private transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
         if (key === 'data') {
             return new Date(value)
         }
@@ -22,20 +21,19 @@ export class Conta {
         return value
     }) || []
 
-    constructor({ nome, saldo }: IConta) {
+    constructor({ nome }: IConta) {
         this.nome = nome
-        this.saldo = saldo
     }
 
     public getTitular() {
         return this.nome
     }
 
-    getSaldo() {
+    public getSaldo() {
         return this.saldo
     }
 
-    getDataAcesso(): Date {
+    public getDataAcesso(): Date {
         return new Date()
     }
 
@@ -49,7 +47,7 @@ export class Conta {
         // }
 
         this.saldo -= valor
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
+        localStorage.setItem("saldo", this.saldo.toString())
     }
 
     @ValidaDeposito
@@ -59,10 +57,10 @@ export class Conta {
         // }
 
         this.saldo += valor
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
+        localStorage.setItem("saldo", this.saldo.toString())
     }
 
-    getGruposTransacoes(): GrupoTransacao[] {
+    public getGruposTransacoes(): GrupoTransacao[] {
         const gruposTransacoes: GrupoTransacao[] = []
         // cria uma copia, ao inves de fazer uma referencia na memoria
         const listaTransacoes: Transacao[] = structuredClone(this.transacoes)
@@ -84,7 +82,7 @@ export class Conta {
         return gruposTransacoes
     }
 
-    registrarTransacao(novaTransacao: Transacao): void {
+    public registrarTransacao(novaTransacao: Transacao): void {
         const tipoTransacaoToUse = novaTransacao.tipoTransacao
         let valorToUse = novaTransacao.valor
         // Obtenha o saldo atual usando getSaldo()
@@ -93,14 +91,14 @@ export class Conta {
 
         } else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
             this.debitar(valorToUse)
-            valorToUse = valorToUse * -1
+            novaTransacao.valor *= -1
 
         } else {
             throw new Error("Tipo de Transação é inválido!")
         }
 
         this.transacoes.push(novaTransacao)
-        Armazenador.salvar({ chave: "transacoes", valor: JSON.stringify(this.transacoes) })
+        localStorage.setItem("transacoes", JSON.stringify(this.transacoes))
     }
 }
 
@@ -117,10 +115,8 @@ export class ContaPremium extends Conta {
 
 export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
-    saldo: 3000,
 })
 
 export const contaPremium = new ContaPremium({
     nome: "Guilherme",
-    saldo: 15000,
 })

@@ -7,21 +7,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { TipoTransacao } from "./Transacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
-import { Armazenador } from "../utils/Armazeandor.js";
 import { ValidaDebito, ValidaDeposito } from "./Decoratos.js";
 export class Conta {
     nome;
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    saldo = Armazenador.obter("saldo") || 0;
-    transacoes = Armazenador.obter(("transacoes"), (key, value) => {
+    saldo = JSON.parse(localStorage.getItem("saldo")) || 0;
+    transacoes = JSON.parse(localStorage.getItem("transacoes"), (key, value) => {
         if (key === 'data') {
             return new Date(value);
         }
         return value;
     }) || [];
-    constructor({ nome, saldo }) {
+    constructor({ nome }) {
         this.nome = nome;
-        this.saldo = saldo;
     }
     getTitular() {
         return this.nome;
@@ -40,14 +38,14 @@ export class Conta {
         //     throw new Error("Saldo insuficiente!")
         // }
         this.saldo -= valor;
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
+        localStorage.setItem("saldo", this.saldo.toString());
     }
     depositar(valor) {
         // if (valor <= 0) {
         //     throw new Error("O valor a ser depositado deve ser maior que zero!")
         // }
         this.saldo += valor;
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
+        localStorage.setItem("saldo", this.saldo.toString());
     }
     getGruposTransacoes() {
         const gruposTransacoes = [];
@@ -77,13 +75,13 @@ export class Conta {
         }
         else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
             this.debitar(valorToUse);
-            valorToUse = valorToUse * -1;
+            novaTransacao.valor *= -1;
         }
         else {
             throw new Error("Tipo de Transação é inválido!");
         }
         this.transacoes.push(novaTransacao);
-        Armazenador.salvar({ chave: "transacoes", valor: JSON.stringify(this.transacoes) });
+        localStorage.setItem("transacoes", JSON.stringify(this.transacoes));
     }
 }
 __decorate([
@@ -103,9 +101,7 @@ export class ContaPremium extends Conta {
 }
 export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
-    saldo: 3000,
 });
 export const contaPremium = new ContaPremium({
     nome: "Guilherme",
-    saldo: 15000,
 });
