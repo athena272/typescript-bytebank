@@ -31,11 +31,11 @@ export class Conta {
         return this.nome
     }
 
-    getSaldo() {
+    public getSaldo() {
         return this.saldo
     }
 
-    getDataAcesso(): Date {
+    public getDataAcesso(): Date {
         return new Date()
     }
 
@@ -49,7 +49,7 @@ export class Conta {
         // }
 
         this.saldo -= valor
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
+        Armazenador.salvar("saldo", this.saldo.toString())
     }
 
     @ValidaDeposito
@@ -59,10 +59,10 @@ export class Conta {
         // }
 
         this.saldo += valor
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
+        Armazenador.salvar("saldo", this.saldo.toString())
     }
 
-    getGruposTransacoes(): GrupoTransacao[] {
+    public getGruposTransacoes(): GrupoTransacao[] {
         const gruposTransacoes: GrupoTransacao[] = []
         // cria uma copia, ao inves de fazer uma referencia na memoria
         const listaTransacoes: Transacao[] = structuredClone(this.transacoes)
@@ -84,7 +84,7 @@ export class Conta {
         return gruposTransacoes
     }
 
-    registrarTransacao(novaTransacao: Transacao): void {
+    public registrarTransacao(novaTransacao: Transacao): void {
         const tipoTransacaoToUse = novaTransacao.tipoTransacao
         let valorToUse = novaTransacao.valor
         // Obtenha o saldo atual usando getSaldo()
@@ -100,7 +100,7 @@ export class Conta {
         }
 
         this.transacoes.push(novaTransacao)
-        Armazenador.salvar({ chave: "transacoes", valor: JSON.stringify(this.transacoes) })
+        localStorage.setItem("transacoes", JSON.stringify(this.transacoes))
     }
 }
 
