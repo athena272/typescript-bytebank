@@ -3,6 +3,7 @@ import { GrupoTransacao } from "./GrupoTransacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
 import { Armazenador } from "../utils/Armazeandor.js";
+import { ValidaDebito, ValidaDeposito } from "./Decoratos.js";
 
 interface IConta {
     nome: string;
@@ -38,22 +39,24 @@ export class Conta {
         return new Date()
     }
 
+    @ValidaDebito
     debitar(valor: number): void {
-        if (valor <= 0) {
-            throw new Error("O valor a ser debitado deve ser maior que zero!")
-        }
-        if (valor > this.saldo) {
-            throw new Error("Saldo insuficiente!")
-        }
+        // if (valor <= 0) {
+        //     throw new Error("O valor a ser debitado deve ser maior que zero!")
+        // }
+        // if (valor > this.saldo) {
+        //     throw new Error("Saldo insuficiente!")
+        // }
 
         this.saldo -= valor
         Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
     }
 
+    @ValidaDeposito
     depositar(valor: number): void {
-        if (valor <= 0) {
-            throw new Error("O valor a ser depositado deve ser maior que zero!")
-        }
+        // if (valor <= 0) {
+        //     throw new Error("O valor a ser depositado deve ser maior que zero!")
+        // }
 
         this.saldo += valor
         Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
