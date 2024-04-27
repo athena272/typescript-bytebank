@@ -40,14 +40,14 @@ export class Conta {
         //     throw new Error("Saldo insuficiente!")
         // }
         this.saldo -= valor;
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
+        Armazenador.salvar("saldo", this.saldo.toString());
     }
     depositar(valor) {
         // if (valor <= 0) {
         //     throw new Error("O valor a ser depositado deve ser maior que zero!")
         // }
         this.saldo += valor;
-        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
+        Armazenador.salvar("saldo", this.saldo.toString());
     }
     getGruposTransacoes() {
         const gruposTransacoes = [];
@@ -83,7 +83,7 @@ export class Conta {
             throw new Error("Tipo de Transação é inválido!");
         }
         this.transacoes.push(novaTransacao);
-        Armazenador.salvar({ chave: "transacoes", valor: JSON.stringify(this.transacoes) });
+        localStorage.setItem("transacoes", JSON.stringify(this.transacoes));
     }
 }
 __decorate([
