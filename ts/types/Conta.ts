@@ -2,7 +2,7 @@ import { Transacao, TipoTransacao } from "./Transacao.js"
 import { GrupoTransacao } from "./GrupoTransacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
-import { Armazenador } from "./Armazeandor.js";
+import { Armazenador } from "../utils/Armazeandor.js";
 
 interface IConta {
     nome: string;
@@ -12,8 +12,8 @@ interface IConta {
 export class Conta {
     protected nome: string
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    private saldo: number = Armazenador.obter("saldo") || 0
-    private transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
+    private saldo: number = Armazenador.obter<number>("saldo") || 0
+    private transacoes: Transacao[] = Armazenador.obter<Transacao[]>(("transacoes"), (key: string, value: string) => {
         if (key === 'data') {
             return new Date(value)
         }
@@ -47,7 +47,7 @@ export class Conta {
         }
 
         this.saldo -= valor
-        localStorage.setItem("saldo", this.saldo.toString())
+        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
     }
 
     depositar(valor: number): void {
@@ -56,7 +56,7 @@ export class Conta {
         }
 
         this.saldo += valor
-        localStorage.setItem("saldo", this.saldo.toString())
+        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() })
     }
 
     getGruposTransacoes(): GrupoTransacao[] {
@@ -97,11 +97,27 @@ export class Conta {
         }
 
         this.transacoes.push(novaTransacao)
-        localStorage.setItem("transacoes", JSON.stringify(this.transacoes))
+        Armazenador.salvar({ chave: "transacoes", valor: JSON.stringify(this.transacoes) })
+    }
+}
+
+export class ContaPremium extends Conta {
+    registrarTransacao(transacao: Transacao): void {
+        if (transacao.tipoTransacao === TipoTransacao.DEPOSITO) {
+            console.log("ganhou um bônus de 0.50 centavos");
+            transacao.valor += 0.5
+        }
+
+        super.registrarTransacao(transacao)
     }
 }
 
 export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
     saldo: 3000,
+})
+
+export const contaPremium = new ContaPremium({
+    nome: "Guilherme",
+    saldo: 15000,
 })

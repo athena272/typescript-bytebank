@@ -1,12 +1,12 @@
 import { TipoTransacao } from "./Transacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
-import { Armazenador } from "./Armazeandor.js";
+import { Armazenador } from "../utils/Armazeandor.js";
 export class Conta {
     nome;
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
     saldo = Armazenador.obter("saldo") || 0;
-    transacoes = JSON.parse(localStorage.getItem("transacoes"), (key, value) => {
+    transacoes = Armazenador.obter(("transacoes"), (key, value) => {
         if (key === 'data') {
             return new Date(value);
         }
@@ -33,14 +33,14 @@ export class Conta {
             throw new Error("Saldo insuficiente!");
         }
         this.saldo -= valor;
-        localStorage.setItem("saldo", this.saldo.toString());
+        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
     }
     depositar(valor) {
         if (valor <= 0) {
             throw new Error("O valor a ser depositado deve ser maior que zero!");
         }
         this.saldo += valor;
-        localStorage.setItem("saldo", this.saldo.toString());
+        Armazenador.salvar({ chave: "saldo", valor: this.saldo.toString() });
     }
     getGruposTransacoes() {
         const gruposTransacoes = [];
@@ -76,10 +76,23 @@ export class Conta {
             throw new Error("Tipo de Transação é inválido!");
         }
         this.transacoes.push(novaTransacao);
-        localStorage.setItem("transacoes", JSON.stringify(this.transacoes));
+        Armazenador.salvar({ chave: "transacoes", valor: JSON.stringify(this.transacoes) });
+    }
+}
+export class ContaPremium extends Conta {
+    registrarTransacao(transacao) {
+        if (transacao.tipoTransacao === TipoTransacao.DEPOSITO) {
+            console.log("ganhou um bônus de 0.50 centavos");
+            transacao.valor += 0.5;
+        }
+        super.registrarTransacao(transacao);
     }
 }
 export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
     saldo: 3000,
+});
+export const contaPremium = new ContaPremium({
+    nome: "Guilherme",
+    saldo: 15000,
 });

@@ -6,17 +6,17 @@ export class Armazenador {
         localStorage.setItem(chave, valorComoString);
     }
 
-    static obter(chave: string, reviver?: (this: any, key: string, value: any) => any) {
-        const valor = localStorage.getItem(chave);
+    static obter<T>(chave: string, reviver?: (this: any, key: string, value: any) => any): T | null {
+        const valor = localStorage.getItem(chave)
 
         if (valor === null) {
-            return null;
+            return null
         }
 
         if (reviver) {
-            return JSON.parse(valor, reviver)
+            return JSON.parse(valor, reviver) as T
         }
 
-        return JSON.parse(valor);
+        return JSON.parse(valor) as T
     }
 }
