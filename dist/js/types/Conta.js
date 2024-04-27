@@ -1,7 +1,7 @@
 import { TipoTransacao } from "./Transacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
-import { Armazenador } from "./Armazeandor.js";
+import { Armazenador } from "../utils/Armazeandor.js";
 export class Conta {
     nome;
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
