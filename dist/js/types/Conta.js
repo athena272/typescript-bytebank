@@ -14,6 +14,9 @@ export class Conta {
         this.nome = nome;
         this.saldo = saldo;
     }
+    getTitular() {
+        return this.nome;
+    }
     getSaldo() {
         return this.saldo;
     }
