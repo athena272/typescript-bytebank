@@ -91,7 +91,7 @@ export class Conta {
 
         } else if (tipoTransacaoToUse === TipoTransacao.TRANSFERENCIA || tipoTransacaoToUse === TipoTransacao.PAGAMENTO_BOLETO) {
             this.debitar(valorToUse)
-            valorToUse = valorToUse * -1
+            novaTransacao.valor *= -1
 
         } else {
             throw new Error("Tipo de Transação é inválido!")
