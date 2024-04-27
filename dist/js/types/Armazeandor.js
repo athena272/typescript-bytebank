@@ -4,7 +4,7 @@ export class Armazenador {
         const valorComoString = JSON.stringify(valor);
         localStorage.setItem(chave, valorComoString);
     }
-    obter(chave, reviver) {
+    static obter(chave, reviver) {
         const valor = localStorage.getItem(chave);
         if (valor === null) {
             return null;
