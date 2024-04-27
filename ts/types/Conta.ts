@@ -12,8 +12,8 @@ interface IConta {
 export class Conta {
     protected nome: string
     // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    private saldo: number = Armazenador.obter("saldo") || 0
-    private transacoes: Transacao[] = Armazenador.obter(("transacoes"), (key: string, value: string) => {
+    private saldo: number = Armazenador.obter<number>("saldo") || 0
+    private transacoes: Transacao[] = Armazenador.obter<Transacao[]>(("transacoes"), (key: string, value: string) => {
         if (key === 'data') {
             return new Date(value)
         }
@@ -101,7 +101,23 @@ export class Conta {
     }
 }
 
+export class ContaPremium extends Conta {
+    registrarTransacao(transacao: Transacao): void {
+        if (transacao.tipoTransacao === TipoTransacao.DEPOSITO) {
+            console.log("ganhou um bônus de 0.50 centavos");
+            transacao.valor += 0.5
+        }
+
+        super.registrarTransacao(transacao)
+    }
+}
+
 export const conta = new Conta({
     nome: "Joana da Silva Oliveira",
     saldo: 3000,
+})
+
+export const contaPremium = new ContaPremium({
+    nome: "Guilherme",
+    saldo: 15000,
 })
