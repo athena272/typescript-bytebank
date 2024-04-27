@@ -2,7 +2,7 @@ import { Transacao, TipoTransacao } from "./Transacao.js"
 import { GrupoTransacao } from "./GrupoTransacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
-import { Armazenador } from "./Armazeandor.js";
+import { Armazenador } from "../utils/Armazeandor.js";
 
 interface IConta {
     nome: string;
