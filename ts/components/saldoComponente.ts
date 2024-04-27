@@ -1,8 +1,9 @@
 import { formatarMoeda, formatarData } from "../utils/formatter.js"
-import Conta from "../types/Conta-antiga.js"
+import { conta } from "../types/Conta.js"
+
 
 function getBlurValue(): string {
-    const saldo = formatarMoeda(Conta.getSaldo())
+    const saldo = formatarMoeda(conta.getSaldo())
     console.log("🚀 ~ getBlurValue ~ saldo:", saldo)
     const blurSaldo = saldo.replace(/\d/g, 'X')
     console.log("🚀 ~ getBlurValue ~ blurSaldo:", blurSaldo)
@@ -15,7 +16,7 @@ const visualizarSaldo = document.querySelector(".saldo-valor strong img") as HTM
 
 renderSaldo()
 function renderSaldo(): void {
-    const saldo = Conta.getSaldo()
+    const saldo = conta.getSaldo()
     elementoSaldo.textContent = formatarMoeda(saldo)
 }
 

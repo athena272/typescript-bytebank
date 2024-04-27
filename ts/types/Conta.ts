@@ -2,6 +2,7 @@ import { Transacao, TipoTransacao } from "./Transacao.js"
 import { GrupoTransacao } from "./GrupoTransacao.js";
 import { formatarData } from "../utils/formatter.js";
 import { FormatoData } from "./Data.js";
+import { Armazenador } from "./Armazeandor.js";
 
 interface IConta {
     nome: string;
@@ -9,9 +10,10 @@ interface IConta {
 }
 
 export class Conta {
-    nome: string
-    saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
+    protected nome: string
+    // private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
+    private saldo: number = Armazenador.obter("saldo") || 0
+    private transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
         if (key === 'data') {
             return new Date(value)
         }
@@ -22,6 +24,10 @@ export class Conta {
     constructor({ nome, saldo }: IConta) {
         this.nome = nome
         this.saldo = saldo
+    }
+
+    public getTitular() {
+        return this.nome
     }
 
     getSaldo() {
