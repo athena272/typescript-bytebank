@@ -9,9 +9,9 @@ interface IConta {
 }
 
 export class Conta {
-    nome: string
-    saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
-    transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
+    protected nome: string
+    private saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0
+    private transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: string) => {
         if (key === 'data') {
             return new Date(value)
         }
@@ -22,6 +22,10 @@ export class Conta {
     constructor({ nome, saldo }: IConta) {
         this.nome = nome
         this.saldo = saldo
+    }
+
+    public getTitular() {
+        return this.nome
     }
 
     getSaldo() {
